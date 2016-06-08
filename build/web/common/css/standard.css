@@ -1,0 +1,48 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2016/06/08, 15:40:52
+    Author     : gest
+*/
+
+/*フォント*/
+@import url(https://fonts.googleapis.com/css?family=Arimo:400,400italic);
+
+/*
+@ページヘッダー用
+@WorkSpacesに適用する
+*/
+#page section#head h1{
+    font-size: 30px;
+    border-bottom-width: 5px;
+    border-bottom-color: #E3E4D9;
+    font-family: 'Arimo', sans-serif;
+}
+
+/*
+@ページボディ用
+@各文字の色とフォント, 背景画像を指定している
+*/
+page{
+    color: #333333;
+    background-image: url("../image/03-light-carpet.png");
+}
+
+/*
+@ページボディ用
+@ページの幅を指定している
+*/
+#page{
+    width: 980px;
+    margin: 10px auto;
+}
+
+/*
+@リンク用
+@カーソルが上に来ると色が変更
+*/
+a{ color: #999966; }
+a:hover{ color: #996600; }
