@@ -32,7 +32,7 @@ public class UserDataDAO {
     
     public UserDataDTO getUserData(UserDataDTO dto) throws SQLException, ClassNotFoundException{
         
-        UserDataDTO accountDTO = new UserDataDTO();
+        UserDataDTO accountDTO = null;
         String selectSql = "SELECT user_id, user_name, pass_word, mail, question_id, answer FROM user_t WHERE user_name = ? and pass_word = ?";
         System.out.println("getUserData start");
         
@@ -45,6 +45,7 @@ public class UserDataDAO {
             ResultSet rs = pst.executeQuery();
                         
             while(rs.next()){
+                accountDTO = new UserDataDTO();
                 accountDTO.setUserID(rs.getInt("user_id"));
                 accountDTO.setUserName(rs.getString("user_name"));
                 accountDTO.setPassWord(rs.getString("pass_word"));

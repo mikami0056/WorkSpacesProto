@@ -22,7 +22,7 @@
             <section id="body">
                 <section id="login">
                     <p class="title">ログイン</p>
-                    <form action="/WorkSpacesProto/Login" method="POST">
+                    <form action="/WorkSpaces/Login" method="POST">
                     <p class="username">ユーザー名<br>
                     <input type="text" name="userName"></p>
                     <p class="password">パスワード<br>

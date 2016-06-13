@@ -1,0 +1,71 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2016/06/12, 12:05:22
+    Author     : gest
+*/
+p{
+    font-size: 16px;
+    margin: 0;
+    text-align: center;
+}
+
+h1.title{
+    margin: 5px 0;
+    width: 240px;
+    text-align: center;    
+}
+
+section.ranking,
+section.newpicture,
+section.newcomment{
+    margin: 5px 0;
+    padding: 0 5px 0 0;
+    float: left;
+    width: 239px;
+    height: 1000px;
+    display: block;
+}
+
+section.ranking p.rank,
+section.ranking p.subject,
+section.ranking p.sum,
+section.newpicture p.rank,
+section.newpicture p.subject,
+section.newpicture p.date{
+    text-align: center;
+}
+
+section.ranking p.img,
+section.newpicture p.img{
+    width: 240px;
+    text-align: center;
+}
+
+section.ranking span.img,
+section.newpicture span.img{
+    display: inline-block;
+    background-color: #ccc;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin: 10px 10px 0 10px;
+    width: 230px;
+    height: 230px;
+    border: 1px solid #ccc;
+    background-size: cover;
+}
+
+section.comment p.link{
+    width: 240px;
+}
+
+section.comment p.link a,
+section.ranking p.link a,
+section.newpicture p.link a{
+    text-align: center;
+}
+
+

@@ -68,7 +68,8 @@ public class Login extends HttpServlet {
             
             //セッション内にアカウント情報があれば遷移
             if(session.getAttribute("loginAccount") != null){
-                destination = "/WorkSpaces";
+                destination = "WorkSpaces";
+                response.sendRedirect(destination);
                 return;
             }
             
@@ -78,7 +79,6 @@ public class Login extends HttpServlet {
             if(!check){
                 response.sendRedirect("index.jsp?flag=1");
                 System.out.println("フォーム入力エラーです.");
-                request.setAttribute("error", "form");
                 return;
             }
             
@@ -91,7 +91,7 @@ public class Login extends HttpServlet {
             @アカウントが存在する場合, その情報をインスタンスに格納し, セッションへ保存する.
             */
             if(varified){
-                UserDataBeans loginAccount = LoginLogic.getInstance().LoginExecute(userName, passWord);
+                UserDataBeans loginAccount = LoginLogic.getInstance().loginExecute(userName, passWord);
                 //アカウント有無の確認, なければログイン画面にリダイレクト
                 if(loginAccount == null){
                     response.sendRedirect("index.jsp?flag=2");
@@ -100,7 +100,7 @@ public class Login extends HttpServlet {
                 }
                 
                 session.setAttribute("loginAccount", loginAccount);
-                destination = "/WorkSpaces";
+                destination = "WorkSpaces";
                 
             //承認されなかった場合    
             }else{
@@ -117,10 +117,12 @@ public class Login extends HttpServlet {
             e.printStackTrace();
             
         }
-            
+        
+        response.sendRedirect(destination);
+        /*
         RequestDispatcher dispatcher = request.getRequestDispatcher(destination);
         dispatcher.forward(request, response);
-            
+        */    
         
     }
 

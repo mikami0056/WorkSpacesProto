@@ -26,7 +26,7 @@ and open the template in the editor.
 @ページボディ用
 @各文字の色とフォント, 背景画像を指定している
 */
-page{
+body{
     color: #333333;
     background-image: url("../image/03-light-carpet.png");
 }
@@ -46,3 +46,4 @@ page{
 */
 a{ color: #999966; }
 a:hover{ color: #996600; }
+

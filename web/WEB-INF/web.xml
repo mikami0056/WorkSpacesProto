@@ -4,9 +4,81 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>Controller.Login</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>WorkSpaces</servlet-name>
+        <servlet-class>Controller.WorkSpaces</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyPage</servlet-name>
+        <servlet-class>Controller.MyPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Upload</servlet-name>
+        <servlet-class>Controller.Upload</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Manage</servlet-name>
+        <servlet-class>Controller.Manage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Registration</servlet-name>
+        <servlet-class>Controller.Registration</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>Controller.Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyDataUpdate</servlet-name>
+        <servlet-class>Controller.MyDataUpdate</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteMyData</servlet-name>
+        <servlet-class>Controller.DeleteMyData</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PictureDetail</servlet-name>
+        <servlet-class>Controller.PictureDetail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WorkSpaces</servlet-name>
+        <url-pattern>/WorkSpaces</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyPage</servlet-name>
+        <url-pattern>/MyPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Upload</servlet-name>
+        <url-pattern>/Upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Manage</servlet-name>
+        <url-pattern>/Manage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Registration</servlet-name>
+        <url-pattern>/Registration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyDataUpdate</servlet-name>
+        <url-pattern>/MyDataUpdate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteMyData</servlet-name>
+        <url-pattern>/DeleteMyData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PictureDetail</servlet-name>
+        <url-pattern>/PictureDetail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

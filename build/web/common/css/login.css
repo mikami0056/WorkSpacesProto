@@ -7,11 +7,6 @@ and open the template in the editor.
     Created on : 2016/06/08, 16:12:44
     Author     : gest
 */
-section#body p{
-    font-family: 'Arimo', sans-serif;
-    color: #333333;
-    margin: 0;
-}
 
 /*
 @ログイン画面用
@@ -48,9 +43,10 @@ section#body p{
 */
 p.username,
 p.password{
+    font-family: 'Arimo', sans-serif;
+    color: #333333;
     margin: 0 auto 10px;
     width: 300px;
-    /*background-color: #000000;*/
 }
 p.username input[type="text"], 
 p.password input[type="password"]{
@@ -100,3 +96,11 @@ p.regist{
     text-align: right;
     margin: 0 10px 5px 0;
 }
+
+/*
+section#body p{
+    font-family: 'Arimo', sans-serif;
+    color: #333333;
+    margin: 0;
+}
+*/

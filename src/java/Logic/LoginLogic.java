@@ -25,7 +25,7 @@ public class LoginLogic {
         return new LoginLogic();
     }
     
-    public UserDataBeans LoginExecute(String userName, String passWord){
+    public UserDataBeans loginExecute(String userName, String passWord){
         
         UserDataBeans instance4Login = new UserDataBeans(userName, passWord);
         UserDataBeans loginAccount = null;
