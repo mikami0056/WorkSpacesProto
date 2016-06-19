@@ -5,6 +5,10 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+            String error = request.getParameter("error");
+            if(error == null){ error = ""; }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,6 +17,8 @@
         <link rel="stylesheet" href="common/css/standard.css">
         <link rel="stylesheet" href="common/css/login.css">
         <script src="https://www.google.com/recaptcha/api.js?hl=ja"></script>
+        <script src="/WorkSpaces/common/checkform.js"></script>
+        <script>Alert('<%=error%>');</script>
     </head>
     <body>
         <div id="page">

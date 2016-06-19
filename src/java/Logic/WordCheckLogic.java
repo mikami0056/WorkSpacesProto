@@ -23,17 +23,18 @@ public class WordCheckLogic {
         
         if(ox != null && ox instanceof String){
             String x = (String)ox;
-            if("".equals(x.trim()) || x.isEmpty()){
+            //空文字と半角英数字以外のものを弾く.
+            if(x.trim().isEmpty() || !x.matches("[a-zA-Z0-9]*")){
                 return check;
             }
-            
         }else{
             return check;
         }
         
         if(oy != null && oy instanceof String){
             String y = (String)oy;
-            if("".equals(y.trim()) || y.isEmpty()){
+            //空文字と半角英数字以外のものを弾く.
+            if(y.trim().isEmpty() || !y.matches("[a-zA-Z0-9]*")){
                 return check;
             }
             

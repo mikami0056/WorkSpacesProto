@@ -8,7 +8,6 @@ package Controller;
 import Logic.PictureGetLogic;
 import Model.PictureDataBeans;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;

@@ -31,16 +31,30 @@
         <%}%>
         <div id="page">
         <header id="pageHead">
-        <h1 id="siteTitel">WorkSpaces</h1>
-        <nav class="global">
-            <ul>
-            <li class="current"><a href="/WorkSpaces/WorkSpaces">ホーム</a></li>
-            <li><a href="/WorkSpaces/WorkSpaces?option=MyPage">マイページ</a></li>
-            <li><a href="/WorkSpaces/WorkSpaces?option=Logout">ログアウト</a></li>
-            <li><a href="/WorkSpaces/WorkSpaces?option=Contact">お問い合わせ</a></li>
-            </ul>
-        </nav>
+        <h1 id="siteTitel">WorkSpaces
+            <span>
+            <section class="search" align="right">
+            <input type="text" name="search" placeholder="キーワードを入力">
+                <select name="category">
+                <option value="none">----</option>
+                <option value="home">自宅</option>
+                <option value="office">会社</option>
+                <option value="else">いろいろ</option>
+                </select>
+            <input type="submit" value="検索">
+            </section>
+            </span>
+        </h1>
+            <nav class="global">
+                <ul>
+                <li class="current"><a href="/WorkSpaces/WorkSpaces">ホーム</a></li>
+                <li><a href="/WorkSpaces/WorkSpaces?option=MyPage">マイページ</a></li>
+                <li><a href="/WorkSpaces/WorkSpaces?option=Logout">ログアウト</a></li>
+                <li><a href="/WorkSpaces/WorkSpaces?option=Contact">お問い合わせ</a></li>
+                </ul>
+            </nav>
         </header>
+        <!--
         <div id="pageBodySub">
             <section class="search">
             <p><input type="text" name="search" placeholder="キーワードを入力"></p>
@@ -55,9 +69,9 @@
             </ul>
             </section>
         </div>
-        <section class="ranking">
+        -->
+        <!--<section class="ranking">-->
         <h1 class="title">ランキング</h1>
-        
         <%
             if((String)hs.getAttribute("Rank") == null){
             Map<Integer, PictureDataBeans> picturesByRank = (LinkedHashMap<Integer, PictureDataBeans>)hs.getAttribute("pictureByRank");
@@ -65,20 +79,20 @@
             for(Integer pictureID : picturesByRank.keySet()){ 
             PictureDataBeans picture = picturesByRank.get(pictureID);
         %>
-            <p class="rank">総合<%=i%>位</p>
-            <p class="img"><a href=<%=jumper +  picture.getPictureID() + "&option=Rank"%>><span class="img" style="background-image: url('<%=picture.getPath()%>')"></span></a></p>
-            <p class="subject"><a href=<%=jumper +  picture.getPictureID() + "&option=Rank"%>><%=picture.getName()%></a></p>
-            <p class="sum">総評価獲得数：<%=picture.getSum()%></p>
-            <% i++;}%>
-            <%}else{%>
-            <p>まだ誰も評価していません...</p>
-            <p class="link"><a href="/WorkSpacesProto/Upload">写真を投稿する</a></p>
-            <%}%>
-        
+        <section class="picture" style="float:left;">
+        <p class="rank">総合<%=i%>位 / <%=picture.getSum()%></p>
+        <p class="img"><a href=<%=jumper +  picture.getPictureID() + "&option=Rank"%>><span class="img" style="background-image: url('<%=picture.getPath()%>')"></span></a></p>
+        <p class="subject"><a href=<%=jumper +  picture.getPictureID() + "&option=Rank"%>><%=picture.getName()%></a></p>
+            <%--<p class="sum">総評価獲得数 <%=picture.getSum()%></p>--%>
         </section>
-        <section class="newpicture">
+        <% i++;}%>
+        <%}else{%>
+        <p>まだ誰も評価していません...</p>
+        <p class="link"><a href="/WorkSpacesProto/Upload">写真を投稿する</a></p>
+        <%}%>
+        <!--</section>-->
+        <!--<section class="newpicture">-->
         <p><h1 class="title">新着写真</h1><p>
-        
         <%
             if((String)hs.getAttribute("Date") == null){
             Map<Integer, PictureDataBeans> picturesByTime = (LinkedHashMap<Integer, PictureDataBeans>)hs.getAttribute("pictureByDate");
@@ -86,20 +100,21 @@
             for(Integer pictureID : picturesByTime.keySet()){ 
             PictureDataBeans picture = picturesByTime.get(pictureID);
         %>
-        <p class="rank">総合<%=i%>位</p>
+        <section class="picture" style="float:left;">
+        <p class="date">投稿日：<%=picture.getDateTime()%></p>
         <p class="img"><a href=<%=jumper +  picture.getPictureID() + "&option=Date"%>><span class="img" style="background-image: url('<%=picture.getPath()%>')"></span></a></p>
         <p class="subject"><a href=<%=jumper +  picture.getPictureID() + "&option=Date"%>><%=picture.getName()%></a></p>
-        <p class="date">投稿日：<%=picture.getDateTime()%></p>
+        </section>
         <% i++;}%>
         <%}else{%>
         <p>まだ誰も投稿していません...</p>
         <p class="link"><a href="/WorkSpaces/Upload">写真を投稿する</a></p>
         <%}%>    
-        
-        </section>
+        <!--</section>-->
+        <%--
         <section class="newcomment">
         <p><h1 class="title">新着コメント</h1></p>
-        <%--
+        
         <%
             if((String)hs.getAttribute("Comment") == null){
             Map<Integer, PictureDataBeans> picturesByComment = (HashMap<Integer, PictureDataBeans>)hs.getAttribute("picturesByComment");

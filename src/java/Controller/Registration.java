@@ -7,9 +7,13 @@ package Controller;
 
 import Model.UserDataBeans;
 import Logic.RegistrationLogic;
+import Model.QuestionDataBeans;
+import Model.QuestionDataDAO;
+import Model.QuestionDataDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -37,8 +41,29 @@ public class Registration extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/registrationform.jsp");
-        dispatcher.forward(request, response);
+        
+        try {
+            HttpSession session = request.getSession();
+            if(session.getAttribute("questions") == null){
+            //質問格納用リスト
+            List<QuestionDataBeans> questions = new ArrayList<>();
+            //質問をDBから取得
+            List<QuestionDataDTO> dtoList = QuestionDataDAO.getInstance().getQuestions();
+            //質問情報を持つインスタンスをリストに格納
+            for(QuestionDataDTO dto : dtoList){
+                QuestionDataBeans question = new QuestionDataBeans();
+                question.QDD2QDBMapping(dto);
+                questions.add(question);
+            }
+            //セッションに格納
+            session.setAttribute("questions", questions);
+            }
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/registrationform.jsp");
+            dispatcher.forward(request, response);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

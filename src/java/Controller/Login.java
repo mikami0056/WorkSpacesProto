@@ -77,7 +77,7 @@ public class Login extends HttpServlet {
             //問題なければtrue, 入力に不備があればfalseを返す.
             boolean check = WordCheckLogic.getInstance().parameterCheck(userName, passWord);
             if(!check){
-                response.sendRedirect("index.jsp?flag=1");
+                response.sendRedirect("index.jsp?error=input");
                 System.out.println("フォーム入力エラーです.");
                 return;
             }
@@ -94,7 +94,7 @@ public class Login extends HttpServlet {
                 UserDataBeans loginAccount = LoginLogic.getInstance().loginExecute(userName, passWord);
                 //アカウント有無の確認, なければログイン画面にリダイレクト
                 if(loginAccount == null){
-                    response.sendRedirect("index.jsp?flag=2");
+                    response.sendRedirect("index.jsp?error=notexisting");
                     System.out.println("アカウントが存在しません.");
                     return;
                 }
@@ -105,24 +105,26 @@ public class Login extends HttpServlet {
             //承認されなかった場合    
             }else{
                 
-                response.sendRedirect("index.jsp?flag=3");
+                response.sendRedirect("index.jsp?error=youwillbebot");
                 System.out.println("ボットである可能性があります.");
                 
             }
+            
+            response.sendRedirect(destination);
         
         }catch(Exception e){
             
-            response.sendRedirect("index.jsp?flag=4");
+            response.sendRedirect("index.jsp?error=contact2admin");
             System.out.println("何かしらのエラーが発生しました.");
             e.printStackTrace();
             
         }
         
-        response.sendRedirect(destination);
+        
         /*
         RequestDispatcher dispatcher = request.getRequestDispatcher(destination);
         dispatcher.forward(request, response);
-        */    
+         */   
         
     }
 

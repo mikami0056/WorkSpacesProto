@@ -104,7 +104,6 @@ public class PictureDataDAO {
                 pdto.setUserID(rs.getInt("user_id"));
                 pdto.setUserName(rs.getString("user_name"));
                 pdtoList.add(pdto);
-                
             }
 
             System.out.println("getPictureData completed");
@@ -149,7 +148,7 @@ public class PictureDataDAO {
                 dto.setUserID(rs.getInt("user_id"));
                 dto.setUserName(rs.getString("user_name"));
                 dto.setCategoryID(rs.getInt("category_id"));
-               
+                
                 pdtoMap.put(dto.getPictureID(), dto);
                 
             }

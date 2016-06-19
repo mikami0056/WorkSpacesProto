@@ -7,27 +7,67 @@ function submitcheck(submitbutton){
     document.regist.button.disabled = !submitbutton.checked;
 }
 
-function check(){
-    var flag = 0;
+function checkParameters(){
+    var cflag = false;
+    var rflag = false;
     var caution = '以下の必須事項が未入力です\n';
+    var formreg = '半角英数文字を入力して下さい\n';
     
-    if(document.regist.username.value === ""){
-        flag = 1; 
-        caution += ' ユーザー名 ';
+    //registrationformの各パラメータ
+    var username = document.regist.username.value;
+    var password = document.regist.password.value;
+    var repassword = document.regist.repassword.value;
+    var mail = document.regist.mail.value;
+    var answer = document.regist.answer.value;
+    var reg = /^[a-zA-Z0-9]+$/;
+    var mailreg = /[\w.\-]+@[\w\-]+\.[\w.\-]+/;
+    
+    
+    if(username === ""){
+        cflag = true; 
+        caution += 'ユーザー名/';
+    } else {
+        if(!username.match(reg)){
+            rflag = true;
+            formreg += 'ユーザー名/';
+        }
     }
     
-    if(document.regist.password.value === ""){
-        flag = 1;
-        caution += ' パスワード ';
+    if(password === ""){
+        cflag = true;
+        caution += 'パスワード/';
+    } else {
+        if(!password.match(reg)){
+            rflag = true;
+            formreg += 'パスワード/';
+        }
     }
     
-    if(document.regist.mail.value === ""){
-        flag = 1;
-        caution += ' メールアドレス ';
+    if(mail === ""){
+        cflag = true;
+        caution += 'メールアドレス/';
+    }else {
+        if(!mail.match(mailreg)){
+            rflag = true;
+            formreg += 'メールアドレス/';
+        }
     }
-                
-    if(flag){
+    
+    if(answer === ""){
+        cflag = true;
+        caution += '秘密の答え';
+    } 
+    
+    if(password !== repassword){
+        cflag = true;
+        caution = 'パスワードが異なります. 再入力して下さい.';
+    }
+    
+    if(cflag){
         window.alert(caution);
+        return false;
+    } else if(rflag){
+        window.alert(formreg);
         return false;
     }
                 
