@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 /**
  *
  * @author gest
@@ -31,7 +29,49 @@ public class MyPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        
+        String view = (String)request.getAttribute("view");
+        String option = request.getParameter("option");
+        String destination = "";
+        
+        if(view != null && view.equals("mypage")){
+            
+            destination = "/WEB-INF/jsp/mypage.jsp";
+            
+        } else if(option != null){
+            
+            switch(option){
+
+            case "Upload":
+            destination = option;
+            request.setAttribute("view", "uploadpicture");
+            break;
+            
+            case "Manage":
+            destination = option;
+            request.setAttribute("option", "mypicturemanage");
+            //destination = "Manage?option=11";
+            break;
+                
+            case "MyDataUpdate"://ユーザー情報変更画
+            destination = option;
+            break;
+            
+            //ユーザー情報削除遷移
+            case "MyDataDelete":
+            destination = option;
+            break;
+            
+            }
+            
+        } else {
+            
+            destination = "/WEB-INF/jsp/mypage.jsp";
+            
+        }
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher(destination);
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -45,45 +85,41 @@ public class MyPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String view = (String)request.getAttribute("view");
+        
+        /*
+        @ 各ページから遷移先をパラメータとして取得
+        @ option:サーブレット遷移用, 主にcontrollerフォルダ内のファイル
+        */
         String option = request.getParameter("option");
         String destination = "";
         
-        if(view != null && view.equals("mypage")){
-            
-            destination = "/WEB-INF/jsp/mypage.jsp";
-            
-        } else if(option != null){
+        if(option != null){
             
             switch(option){
-            
-            case "Upload":  //写真投稿
-            destination = option;
-            request.setAttribute("view", "uploadpicture");
-            break;
-            
-            case "Manage":  //写真管理
-            destination = option;
-            request.setAttribute("option", "manageMyPicture");
-            break;
                 
-            case "MyDataUpdate":    //ユーザー情報変更画
-            destination = option;
-            break;
-            
-            case "DeleteMyData":    //ユーザー情報削除遷移
-            destination = option;
-            break;
-            
+                //写真投稿遷移
+                case "Upload":
+                destination = option;
+                request.setAttribute("view", "uploadpicture");
+                break;
+                
+                //写真管理遷移
+                case "Manage":
+                destination = option;
+                request.setAttribute("option", "mypicturemanage");
+                break;
+                
+                //ユーザー情報更新遷移
+                case "MyDataUpdate":
+                destination = option;
+                break;
+                
+                //ユーザー情報削除遷移
+                case "MyDataDelete":
+                destination = option;
+                break;
+                
             }
-            
-        } else {
-            
-            destination = "/WEB-INF/jsp/mypage.jsp";
-            if(request.getAttribute("flag") != null){
-            request.setAttribute("option", "pictureupload");
-            }
-            
         }
         
         RequestDispatcher dispatcher = request.getRequestDispatcher(destination);

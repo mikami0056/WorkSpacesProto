@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package model;
 
-import DB.dbmanager;
+import db.dbmanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -24,6 +23,7 @@ import java.util.logging.Logger;
  * @author gest
  */
 public class PictureDataDAO {
+    
     public PictureDataDAO(){}
     
     public static PictureDataDAO getInstance(){
@@ -38,7 +38,7 @@ public class PictureDataDAO {
         
         Connection con = null;
         PreparedStatement pst = null;
-        String selectSql = "INSERT INTO picture_t VALUES(?,?,?,?,?,?,?,?,?)";
+        String selectSql = "INSERT INTO picture_t VALUES(?,?,?,?,?,?,?,?)";
         System.out.println("setPictueData start");
         
         try{
@@ -53,7 +53,6 @@ public class PictureDataDAO {
             pst.setInt(6, dto.getCategoryID());
             pst.setInt(7, dto.getUserID());
             pst.setString(8, dto.getUserName());
-            pst.setInt(9, dto.getSum());
             
             pst.executeUpdate();
 
@@ -104,6 +103,7 @@ public class PictureDataDAO {
                 pdto.setUserID(rs.getInt("user_id"));
                 pdto.setUserName(rs.getString("user_name"));
                 pdtoList.add(pdto);
+                
             }
 
             System.out.println("getPictureData completed");
@@ -148,7 +148,7 @@ public class PictureDataDAO {
                 dto.setUserID(rs.getInt("user_id"));
                 dto.setUserName(rs.getString("user_name"));
                 dto.setCategoryID(rs.getInt("category_id"));
-                
+               
                 pdtoMap.put(dto.getPictureID(), dto);
                 
             }
@@ -177,39 +177,33 @@ public class PictureDataDAO {
     public Map<Integer, PictureDataDTO> getPictureDataBySearch(String method) throws ClassNotFoundException, SQLException{
         
         String mainSearch = "";
-        String subSearch = "";
+        String subSearh = "";
         String mainTable = "";
         String subTable = "";
-        String sql = "";
         switch(method){
             
             case "Rank":
             mainSearch = "sum";
-            mainTable = "evaluation_t";
-            subSearch = "picture_id";
-            subTable = "picture_t";
-            sql = "SELECT * FROM " + subTable + " WHERE " + subSearch + " IN ( SELECT " + subSearch + " FROM " + mainTable +") ORDER BY " + mainSearch + " DESC LIMIT 3 ";
+            mainTable = "picture_t";
             break;
             
             case "Date":
             mainSearch = "submit_date";
             mainTable = "picture_t";
-            sql = "SELECT * FROM " + mainTable + " ORDER BY " + mainSearch + " DESC LIMIT 3";
             break;
             
         }
         
         Connection con = null;
         PreparedStatement pst = null;
-        Map<Integer, PictureDataDTO> pdtoMap = new LinkedHashMap<>();
-        //String selectSqlFromPicture = "SELECT * FROM picture_t ORDER BY " + mainSearch + " DESC LIMIT 3";
-        System.out.println("getPictureDataBySearch start");
+        Map<Integer, PictureDataDTO> pdtoMap = new HashMap<Integer, PictureDataDTO>();
+        String selectSqlFromPicture = "SELECT * FROM picture_t ORDER BY " + mainSearch + " DESC";
+        System.out.println("getPictureDataByEval start");
         
         try{
             
             con = dbmanager.getConnection();
-            //pst = con.prepareStatement(selectSqlFromPicture);
-            pst = con.prepareStatement(sql);
+            pst = con.prepareStatement(selectSqlFromPicture);
             ResultSet rs = pst.executeQuery();//nullを返さないので注意
             
             while(rs.next()){
@@ -224,8 +218,7 @@ public class PictureDataDAO {
                 dto.setUserID(rs.getInt("user_id"));
                 dto.setUserName(rs.getString("user_name"));
                 dto.setCategoryID(rs.getInt("category_id"));
-                dto.setSum(rs.getInt("sum"));
-                
+               
                 pdtoMap.put(dto.getPictureID(), dto);
                 
             }
@@ -258,7 +251,7 @@ public class PictureDataDAO {
         Map<Integer, PictureDataDTO> pdtoMap = new HashMap<Integer, PictureDataDTO>();
         String selectSqlFromComment = "SELECT * FROM comment_t ORDER BY comment_date LIMIT 10";
         String selectSqlFromPicture = "SELECT * FROM user_t WHERE user_id = ?";
-        System.out.println("getPictureDataByNewComment start");
+        System.out.println("getPictureDataByEval start");
         
         try{
             
@@ -355,6 +348,7 @@ public class PictureDataDAO {
         }
         return pdtoList;
     }
+    */
     
     /*
     @更新された写真情報を格納するメソッド
@@ -481,5 +475,4 @@ public class PictureDataDAO {
         }
         
     }
-    
 }

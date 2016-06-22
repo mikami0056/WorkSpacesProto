@@ -1,19 +1,18 @@
 <%-- 
     Document   : workspaces
-    Created on : 2016/06/11, 15:37:51
+    Created on : 2016/05/28, 16:17:45
     Author     : gest
 --%>
 
-<%@page import="java.util.LinkedHashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="Model.PictureDataBeans"%>
+<%@page import="model.PictureDataBeans"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     HttpSession hs = request.getSession();
-    String jumper = "/WorkSpaces/PictureDetail?ID=";
+    String jumper = "/WorkSpacesProto/PictureDetail?ID=";
 %>
 <!DOCTYPE html>
 <html>
@@ -21,40 +20,23 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WorkSpace</title>
         <link rel="stylesheet" href="common/css/standard.css">
-        <link rel="stylesheet" href="common/css/globalnavi.css">
         <link rel="stylesheet" href="common/css/searchandcategories.css">
         <link rel="stylesheet" href="common/css/ranking.css">
+        <!--<link rel="stylesheet" href="common/css/style.css">-->
     </head>
     <body>
-        <%if(request.getAttribute("flag") != null && request.getAttribute("flag").equals("welcome")){%>
-        <script>window.alert('ようこそ! WorkSpacesへ!');</script>
-        <%}%>
         <div id="page">
         <header id="pageHead">
-        <h1 id="siteTitel">WorkSpaces
-            <span>
-            <section class="search" align="right">
-            <input type="text" name="search" placeholder="キーワードを入力">
-                <select name="category">
-                <option value="none">----</option>
-                <option value="home">自宅</option>
-                <option value="office">会社</option>
-                <option value="else">いろいろ</option>
-                </select>
-            <input type="submit" value="検索">
-            </section>
-            </span>
-        </h1>
-            <nav class="global">
-                <ul>
-                <li class="current"><a href="/WorkSpaces/WorkSpaces">ホーム</a></li>
-                <li><a href="/WorkSpaces/WorkSpaces?option=MyPage">マイページ</a></li>
-                <li><a href="/WorkSpaces/WorkSpaces?option=Logout">ログアウト</a></li>
-                <li><a href="/WorkSpaces/WorkSpaces?option=Contact">お問い合わせ</a></li>
-                </ul>
-            </nav>
+        <h1 id="siteTitel">WorkSpaces</h1>
+        <nav class="global">
+            <ul>
+            <li class="current"><a href="/WorkSpacesProto/WorkSpaces">ホーム</a></li>
+            <li><a href="/WorkSpacesProto/WorkSpaces?option=MyPage">マイページ</a></li>
+            <li><a href="/WorkSpacesProto/WorkSpaces?option=Logout">ログアウト</a></li>
+            <li><a href="/WorkSpacesProto/WorkSpaces?option=Contact">お問い合わせ</a></li>
+            </ul>
+        </nav>
         </header>
-        <!--
         <div id="pageBodySub">
             <section class="search">
             <p><input type="text" name="search" placeholder="キーワードを入力"></p>
@@ -69,52 +51,46 @@
             </ul>
             </section>
         </div>
-        -->
-        <!--<section class="ranking">-->
+        <section class="ranking">
         <h1 class="title">ランキング</h1>
         <%
             if((String)hs.getAttribute("Rank") == null){
-            Map<Integer, PictureDataBeans> picturesByRank = (LinkedHashMap<Integer, PictureDataBeans>)hs.getAttribute("pictureByRank");
+            Map<Integer, PictureDataBeans> picturesByRank = (HashMap<Integer, PictureDataBeans>)hs.getAttribute("picturesByRank");
             int i = 1;
             for(Integer pictureID : picturesByRank.keySet()){ 
             PictureDataBeans picture = picturesByRank.get(pictureID);
         %>
-        <section class="picture" style="float:left;">
-        <p class="rank">総合<%=i%>位 / <%=picture.getSum()%></p>
-        <p class="img"><a href=<%=jumper +  picture.getPictureID() + "&option=Rank"%>><span class="img" style="background-image: url('<%=picture.getPath()%>')"></span></a></p>
-        <p class="subject"><a href=<%=jumper +  picture.getPictureID() + "&option=Rank"%>><%=picture.getName()%></a></p>
-            <%--<p class="sum">総評価獲得数 <%=picture.getSum()%></p>--%>
+            <p class="rank">総合<%=i%>位</p>
+            <p class="img"><a href=<%=jumper +  picture.getPictureID() + "&option=Rank"%>><span class="img" style="background-image: url('<%=picture.getPath()%>')"></span></a></p>
+            <p class="subject">題名:<a href=<%=jumper +  picture.getPictureID() + "&option=Rank"%>><%=picture.getName()%></a></p>
+            <p class="sum">総評価獲得数：<%=picture.getSum()%></p>
+            <% i++;}%>
+            <%}else{%>
+            <p>まだ誰も評価していません...</p>
+            <p class="link"><a href="/WorkSpacesProto/Upload">写真を投稿する</a></p>
+            <%}%>
         </section>
-        <% i++;}%>
-        <%}else{%>
-        <p>まだ誰も評価していません...</p>
-        <p class="link"><a href="/WorkSpacesProto/Upload">写真を投稿する</a></p>
-        <%}%>
-        <!--</section>-->
-        <!--<section class="newpicture">-->
+        <section class="newpicture">
         <p><h1 class="title">新着写真</h1><p>
         <%
             if((String)hs.getAttribute("Date") == null){
-            Map<Integer, PictureDataBeans> picturesByTime = (LinkedHashMap<Integer, PictureDataBeans>)hs.getAttribute("pictureByDate");
+            Map<Integer, PictureDataBeans> picturesByTime = (HashMap<Integer, PictureDataBeans>)hs.getAttribute("picturesByDate");
             int i = 1;
             for(Integer pictureID : picturesByTime.keySet()){ 
             PictureDataBeans picture = picturesByTime.get(pictureID);
         %>
-        <section class="picture" style="float:left;">
-        <p class="date">投稿日：<%=picture.getDateTime()%></p>
+        <p class="rank">総合<%=i%>位</p>
         <p class="img"><a href=<%=jumper +  picture.getPictureID() + "&option=Date"%>><span class="img" style="background-image: url('<%=picture.getPath()%>')"></span></a></p>
-        <p class="subject"><a href=<%=jumper +  picture.getPictureID() + "&option=Date"%>><%=picture.getName()%></a></p>
-        </section>
+        <p class="subject"><a href=<%=jumper +  picture.getPictureID() + "&option=Date"%>>題名：<%=picture.getName()%></a></p>
+        <p class="date">投稿日：<%=picture.getDateTime()%></p>
         <% i++;}%>
         <%}else{%>
         <p>まだ誰も投稿していません...</p>
-        <p class="link"><a href="/WorkSpaces/Upload">写真を投稿する</a></p>
+        <p class="link"><a href="/WorkSpacesProto/Upload">写真を投稿する</a></p>
         <%}%>    
-        <!--</section>-->
-        <%--
+        </section>
         <section class="newcomment">
         <p><h1 class="title">新着コメント</h1></p>
-        
         <%
             if((String)hs.getAttribute("Comment") == null){
             Map<Integer, PictureDataBeans> picturesByComment = (HashMap<Integer, PictureDataBeans>)hs.getAttribute("picturesByComment");
@@ -130,8 +106,7 @@
         <%}else{%>
         <p>まだ誰もコメントしていません...</p>
         <p class="link"><a href="/WorkSpacesProto/Upload">写真を投稿する</a></p>
-        <%}%>
-        --%>
+        <%}%>    
         </section>
         </div>
     </body>

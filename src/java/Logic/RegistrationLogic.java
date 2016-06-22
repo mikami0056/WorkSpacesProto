@@ -6,15 +6,16 @@
 package Logic;
 
 import java.sql.SQLException;
-import Model.UserDataBeans;
-import Model.UserDataDTO;
-import Model.UserDataDAO;
+import model.UserDataBeans;
+import model.UserDataDAO;
+import model.UserDataDTO;
 
 /**
  *
  * @author gest
  */
 public class RegistrationLogic {
+    
     public RegistrationLogic(){}
     
     public static RegistrationLogic getInstance(){
@@ -39,4 +40,5 @@ public class RegistrationLogic {
             
         }
     }
+    
 }

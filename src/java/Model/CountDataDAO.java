@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package model;
 
-import DB.dbmanager;
+import db.dbmanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +16,7 @@ import java.sql.SQLException;
  * @author gest
  */
 public class CountDataDAO {
+    
     public CountDataDAO(){}
     
     public static CountDataDAO getInstance(){
@@ -64,14 +65,13 @@ public class CountDataDAO {
         
         Connection con = null;
         PreparedStatement pst = null;
-        String updateSql = "UPDATE evaluation_t SET beautiful = ?, cool = ?, stylish = ?, sum = ? WHERE picture_id = ?";
-        String updateSql4PictureData = "UPDATE picture_t SET sum = ? WHERE picture_id = ?";
+        String insertSql = "UPDATE evaluation_t SET beautiful = ?, cool = ?, stylish = ?, sum = ? WHERE pictureID = ?";
         System.out.println("insertCountData start");
         
         try{
             
             con = dbmanager.getConnection();
-            pst = con.prepareStatement(updateSql);
+            pst = con.prepareStatement(insertSql);
             pst.setInt(1, dto.getBeautiful());
             pst.setInt(2, dto.getCool());
             pst.setInt(3, dto.getStylish());
@@ -79,12 +79,6 @@ public class CountDataDAO {
             //pst.setInt(4,dto.getUserID());
             pst.setInt(5, dto.getPictureID());
             
-            pst.executeUpdate();
-            
-            //写真
-            pst = con.prepareStatement(updateSql4PictureData);
-            pst.setInt(1, dto.getBeautiful() + dto.getCool() + dto.getStylish());
-            pst.setInt(2, dto.getPictureID());
             pst.executeUpdate();
             
             System.out.println("insertCountData completed");
@@ -113,12 +107,12 @@ public class CountDataDAO {
         
         Connection con = null;
         PreparedStatement pst = null;
-        String selectSqlByPicture = "SELECT * FROM picture_t WHERE picture_id = ?";
-        String selectSqlByEvaluation = "SELECT * FROM evaluation_t WHERE picture_id = ?";
+        String selectSqlByPicture = "SELECT * FROM picture_t WHERE pictureID = ?";
+        String selectSqlByEvaluation = "SELECT * FROM evaluation_t WHERE pictureID = ?";
         System.out.println("checkCountDataExist start");
         
         try{
-            //写真のデータが存在しているか確認
+            
             con = dbmanager.getConnection();
             pst = con.prepareStatement(selectSqlByPicture);
             //pst.setInt(1, dto.getUserID());
@@ -126,17 +120,13 @@ public class CountDataDAO {
             ResultSet rs1 = pst.executeQuery();
             
             /*
-            @検索結果が空の場合, rs.next()はfalseを返す.
+            @検索結果が空の場合, rs.next()はfalseを返す. それを反転させてjudgeに代入
             */
-            //存在してる場合, 写真の評価データが存在しているか確認
-            //存在=true, 不在=false
-            System.out.println("ID確認"+dto.getPictureID());
             if(rs1.next()){
                 pst = con.prepareStatement(selectSqlByEvaluation);
-                System.out.println("ID確認"+dto.getPictureID());
                 pst.setInt(1, dto.getPictureID());
                 ResultSet rs2 = pst.executeQuery();
-                judge = rs2.next();
+                judge = !rs2.next();
             }
             
             System.out.println("checkCountDataExist completed");
@@ -155,7 +145,7 @@ public class CountDataDAO {
                 con.close();
             }
         }
-        System.out.println("judge:" + judge);
+        
         return judge;
     }
     
@@ -163,7 +153,7 @@ public class CountDataDAO {
         
         Connection con = null;
         PreparedStatement pst = null;
-        String selectSql = "SELECT beautiful, cool, stylish FROM evaluation_t WHERE picture_id = ?";
+        String selectSql = "SELECT beautiful, cool, stylish FROM evaluation_t WHERE pictureID = ?";
         System.out.println("getCountData start");
         
         try{
@@ -198,5 +188,4 @@ public class CountDataDAO {
         }
         return dto;
     }
-    
 }

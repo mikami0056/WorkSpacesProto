@@ -1,6 +1,6 @@
-<%-- 
+ <%-- 
     Document   : mypage
-    Created on : 2016/06/11, 16:45:40
+    Created on : 2016/05/30, 10:27:45
     Author     : gest
 --%>
 
@@ -12,22 +12,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WorkSpaces</title>
         <link rel="stylesheet" href="common/css/standard.css">
-        <link rel="stylesheet" href="common/css/globalnavi.css">
         <link rel="stylesheet" href="common/css/mypage.css">
     </head>
     <body>
-        <%if(request.getAttribute("option") != null && request.getAttribute("option").equals("pictureupload")){%>
-        <script>window.alert('写真の投稿が完了しました');</script>
-        <%}%>
         <div id="page">
         <header id="pageHead">
         <h1 id="siteTitel">WorkSpaces</h1>
             <nav class="global">
                 <ul>
-                <li><a href="/WorkSpaces/WorkSpaces">ホーム</a></li>
-                <li class="current"><a href="/WorkSpaces/WorkSpaces?option=MyPage">マイページ</a></li>
-                <li><a href="/WorkSpaces/WorkSpaces?option=Logout">ログアウト</a></li>
-                <li><a href="/WorkSpaces/WorkSpaces?option=Contact">お問い合わせ</a></li>
+                <li><a href="/WorkSpacesProto/WorkSpaces">ホーム</a></li>
+                <li class="current"><a href="/WorkSpacesProto/WorkSpaces?option=MyPage">マイページ</a></li>
+                <li><a href="/WorkSpacesProto/WorkSpaces?option=Logout">ログアウト</a></li>
+                <li><a href="/WorkSpacesProto/WorkSpaces?option=Contact">お問い合わせ</a></li>
                 </ul>
             </nav>
         </header>
@@ -42,10 +38,10 @@
             </section>
             <section class="buttoms">
                 <ul>
-                    <li><a class="buttom" href="/WorkSpaces/MyPage?option=Upload">写真を投稿</a></li>
-                    <li><a class="buttom" href="/WorkSpaces/MyPage?option=Manage">写真を管理</a></li>
-                    <li><a class="buttom" href="/WorkSpaces/MyPage?option=MyDataUpdate">ユーザー情報を変更</a></li>
-                    <li><a class="buttom" href="/WorkSpaces/MyPage?option=DeleteMyData">ユーザー情報を削除</a></li>
+                    <li><a class="buttom" href="/WorkSpacesProto/MyPage?option=Upload">写真を投稿</a></li>
+                    <li><a class="buttom" href="/WorkSpacesProto/MyPage?option=Manage">写真を管理</a></li>
+                    <li><a class="buttom" href="/WorkSpacesProto/MyPage?option=MyDataUpdate">ユーザー情報を変更</a></li>
+                    <li><a class="buttom" href="/WorkSpacesProto/MyPage?option=MyDataDelete">ユーザー情報を削除</a></li>
                 </ul>
             </section>
         </section>

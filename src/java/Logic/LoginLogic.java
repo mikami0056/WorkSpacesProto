@@ -5,13 +5,13 @@
  */
 package Logic;
 
-import Controller.Login;
-import Model.UserDataBeans;
-import Model.UserDataDAO;
-import Model.UserDataDTO;
+import controller.Login;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.UserDataBeans;
+import model.UserDataDAO;
+import model.UserDataDTO;
 
 /**
  *
@@ -25,7 +25,7 @@ public class LoginLogic {
         return new LoginLogic();
     }
     
-    public UserDataBeans loginExecute(String userName, String passWord){
+    public UserDataBeans LoginExecute(String userName, String passWord){
         
         UserDataBeans instance4Login = new UserDataBeans(userName, passWord);
         UserDataBeans loginAccount = null;

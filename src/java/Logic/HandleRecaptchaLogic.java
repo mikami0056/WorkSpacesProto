@@ -20,7 +20,6 @@ import java.net.URL;
  */
 public class HandleRecaptchaLogic {
     
-    //接続時に必要な各変数
     private final String baseURL = "https://www.google.com/recaptcha/api/siteverify?secret=";
     private final String secretKey = "6Ldh7yATAAAAALd1so7aukMFOHkahuwbIWd9t-9D";
     private String remoteIp;
@@ -32,9 +31,6 @@ public class HandleRecaptchaLogic {
         this.response = response;
     }
     
-    /*
-    @
-    */
     public static HandleRecaptchaLogic getInstance(Object x, Object y){
         //入力判断
         String remoteIp = "";
@@ -56,7 +52,7 @@ public class HandleRecaptchaLogic {
         }
         return new HandleRecaptchaLogic(remoteIp, response);
     }
-    
+
     public boolean connection2Google(){
         //リクエストと秘密鍵をGoogleReCaptchaに送る
         HttpURLConnection conn = null;
@@ -95,4 +91,8 @@ public class HandleRecaptchaLogic {
             return varified;
         }
     }
+    
+    
+    
+    
 }

@@ -3,28 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package model;
 
-import DB.dbmanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+
+import db.dbmanager;
+import java.sql.ResultSet;
 
 /**
  *
  * @author gest
  */
 public class UserDataDAO {
-    
-    private Connection con;
-    private PreparedStatement pst;
-    
-    public UserDataDAO(){
-        con = null;
-        pst = null;
-    }
+    public UserDataDAO(){}
     
     public static UserDataDAO getInstance(){
         return new UserDataDAO();
@@ -33,7 +27,9 @@ public class UserDataDAO {
     public UserDataDTO getUserData(UserDataDTO dto) throws SQLException, ClassNotFoundException{
         
         UserDataDTO accountDTO = null;
-        String selectSql = "SELECT user_id, user_name, pass_word, mail, question_id, answer FROM user_t WHERE user_name = ? and pass_word = ?";
+        Connection con = null;
+        PreparedStatement pst = null;
+        String selectSql = "SELECT userID, username, password, mail, questionID, answer FROM user_t WHERE username = ? and password = ?";
         System.out.println("getUserData start");
         
         try{
@@ -45,15 +41,19 @@ public class UserDataDAO {
             ResultSet rs = pst.executeQuery();
                         
             while(rs.next()){
-                accountDTO = new UserDataDTO();
-                accountDTO.setUserID(rs.getInt("user_id"));
-                accountDTO.setUserName(rs.getString("user_name"));
-                accountDTO.setPassWord(rs.getString("pass_word"));
-                accountDTO.setMail(rs.getString("mail"));
-                accountDTO.setQuestionID(rs.getInt("question_id"));
-                accountDTO.setAnswer(rs.getString("answer"));
+                int userID = rs.getInt("userID");
+                System.out.println(userID);
+                String userName = rs.getString("username");
+                String passWord = rs.getString("password");
+                String mail = rs.getString("mail");
+                int questionID = rs.getInt("questionID");
+                String answer = rs.getString("answer");
+                accountDTO = new UserDataDTO(userID, userName, passWord, mail, questionID, answer);
             }
             
+            if(accountDTO == null){
+            System.out.println("テスト2");
+            }
             System.out.println("getUserData completed");
             return accountDTO;
             
@@ -71,43 +71,46 @@ public class UserDataDAO {
     /*
     @登録可否をチェックするためのメソッド
     @新規登録時に使用
-    @ユーザ入力フォ−ムより受け取ったユーザIDが同一のものがいないか確認する
+    @ユーザ入力フォ−ムより受け取ったユーザIDとメールアドレスが同一のものがいないか確認する
     */
     public boolean checkUserData(UserDataDTO dto)throws SQLException, ClassNotFoundException{
         
-        String checkSql = "SELECT * FROM user_t WHERE user_name = ?";
+        Connection con = null;
+        PreparedStatement pst = null;
+        String checkSql = "SELECT * FROM user_t WHERE username = ? and mail = ?";
         System.out.println("[Notice in UserDataDAO.java]\"checkUserData\" has been started[at checkUserData]");
         boolean exist = false;
         
         try{
-            
             con = dbmanager.getConnection();
             pst =  con.prepareStatement(checkSql);
             pst.setString(1, dto.getUserName());
+            pst.setString(2, dto.getMail());
             ResultSet rs = pst.executeQuery();
-            
-            //同じユーザ名とメールアドレスが登録されていれば失敗, falseを返す
+            //同じユーザ名とパスワードが登録されていれば失敗falseを返す
             exist = !rs.next();
+            
             if(!rs.next()){
                 exist = !rs.next();
-                System.out.println("[Notice]name has been existing. Please fill out the form again.");
+                System.out.println("[Notice]name and password has been existing. Please fill out the form again.");
             }
             
-        }catch(ClassNotFoundException | SQLException error){
-            System.out.println(error.getMessage());
-            error.printStackTrace();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            throw new SQLException(e);
         }finally{
             if(con != null){
                 con.close();
             }
         }
-        
         return exist;
     }
     
     public void insertUserData(UserDataDTO dto) throws ClassNotFoundException, SQLException{
         
-        String insertSql = "INSERT INTO user_t(user_id,user_name,pass_word,mail,question_id,answer,regist_date) VALUES(?,?,?,?,?,?,?)";
+        Connection con = null;
+        PreparedStatement pst = null;
+        String insertSql = "INSERT INTO user_t(userID,username,password,mail,questionID,answer,registDate) VALUES(?,?,?,?,?,?,?)";
         System.out.println("[Notice in UserDataDAO.java]\"insertUserData\" has been started[at checkUserData]");
         
         try{
@@ -124,9 +127,10 @@ public class UserDataDAO {
             pst.executeUpdate();
             System.out.println("inserInformation start completed");
             
-        }catch(ClassNotFoundException | SQLException error){
-            System.out.println(error.getMessage());
-            error.printStackTrace();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            throw new SQLException(e);
+            
         }finally{
             if(con != null){
                 con.close();
@@ -137,7 +141,9 @@ public class UserDataDAO {
     
     public void updateUserData(UserDataDTO dto) throws ClassNotFoundException, SQLException{
         
-        String updateSql4User = "UPDATE user_t SET user_name = ?, pass_word = ?, mail = ? WHERE user_id = ?";
+        Connection con = null;
+        PreparedStatement pst = null;
+        String updateSql4User = "UPDATE user_t SET userName = ?, passWord = ?, mail = ? WHERE userID = ?";
         System.out.println("updateUserData start");
         
         try{
@@ -152,22 +158,38 @@ public class UserDataDAO {
             
             System.out.println("updateUserData completed");
             
-        }catch(ClassNotFoundException | SQLException classError){
+        }catch(ClassNotFoundException classError){
+            
             System.out.println(classError.getMessage());
             classError.printStackTrace();
+            throw new ClassNotFoundException(classError.getMessage());
+            
+        }catch(SQLException sqlError){
+            
+            System.out.println(sqlError.getMessage());
+            sqlError.printStackTrace();
+            throw new SQLException(sqlError.getMessage());
+            
         }finally{
+            
             if(con != null){
                 con.close();
             }
+            
         }
+        
+        
+        
     }
     
     public void deleteUserData(UserDataDTO dto) throws ClassNotFoundException, SQLException{
         
-        String deleteSql4Evaluation = "DELETE FROM evaluation_t WHERE user_id = ?";
-        String deleteSql4Comment = "DELETE FROM comment_t WHERE user_id = ?";
-        String deleteSql4Picture = "DELETE FROM picture_t WHERE user_id = ?";
-        String deleteSql4User = "DELETE FROM user_t WHERE user_id = ? OR user_name = ?";
+        Connection con = null;
+        PreparedStatement pst = null;
+        String deleteSql4Evaluation = "DELETE FROM evaluation_t WHERE userID = ?";
+        String deleteSql4Comment = "DELETE FROM comment_t WHERE userID = ?";
+        String deleteSql4Picture = "DELETE FROM picture_t WHERE userID = ?";
+        String deleteSql4User = "DELETE FROM user_t WHERE userID = ? OR userName = ?";
         System.out.println("deleteUserData start");
         
         try{
@@ -194,17 +216,25 @@ public class UserDataDAO {
             pst.executeUpdate();
             System.out.println("ユーザーテーブルからユーザー情報を削除しました");
 
-        }catch(ClassNotFoundException | SQLException classError){
+        }catch(ClassNotFoundException classError){
             
             System.out.println(classError.getMessage());
             classError.printStackTrace();
+            throw new ClassNotFoundException(classError.getMessage());
+            
+        }catch(SQLException sqlError){
+            
+            System.out.println(sqlError.getMessage());
+            sqlError.printStackTrace();
+            throw new SQLException(sqlError.getMessage());
             
         }finally{
+            
             if(con != null){
                 con.close();
             }
+            
         }
         
     }
-    
 }

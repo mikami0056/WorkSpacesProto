@@ -5,17 +5,17 @@
  */
 package Logic;
 
-import Model.PictureDataBeans;
-import Model.PictureDataDAO;
-import Model.PictureDataDTO;
-import Model.UserDataBeans;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import model.PictureDataBeans;
+import model.PictureDataDAO;
+import model.PictureDataDTO;
+import model.UserDataBeans;
 
 /**
  *
@@ -47,7 +47,7 @@ public class PictureGetLogic {
             break;
         }
         
-        Map<Integer, PictureDataBeans> pictures = new LinkedHashMap<>();
+        Map<Integer, PictureDataBeans> pictures = new HashMap<>();
         if(!pdtoMap.isEmpty()){
             for(Integer pdtoID: pdtoMap.keySet()){
                 PictureDataBeans picture = new PictureDataBeans();
@@ -55,6 +55,7 @@ public class PictureGetLogic {
                 pictures.put(picture.getPictureID(), picture);
             }
         }
+        System.out.println("PictureGetLogic2:" + pictures.size());
         return pictures;
     }
     
@@ -90,10 +91,10 @@ public class PictureGetLogic {
     }
     */
     //写真取得
-    public Map<Integer, PictureDataBeans> getPicture(UserDataBeans loginAccount, String contextPath) throws IOException, SQLException{
+    public Map<String, PictureDataBeans> PictureGet(UserDataBeans loginAccount, String contextPath) throws IOException, SQLException{
                 
         //ユーザーの写真が保存されているディレクトリの場所のパス
-        String path = "/Users/gest/NetBeansProjects/WorkSpaces/web/common/pictures/" + loginAccount.getUserID();
+        String path = "/Users/gest/NetBeansProjects/WorkSpacesProto/web/common/image/" + loginAccount.getUserName();
         //パスよりディレクトリを取得
         File directory = new File(path);
         File[] files = directory.listFiles();
@@ -104,19 +105,19 @@ public class PictureGetLogic {
         //データベースに接続し, 写真の情報を持ったインスタンス群を取得
         List<PictureDataDTO> pictureDataList = PictureDataDAO.getInstance().getPictureDataByUserID(dto);
         
-        Map<Integer, PictureDataBeans> pictures = new HashMap<>();
+        Map<String, PictureDataBeans> pictures = new HashMap<>();
         
         if(pictureDataList != null){
             for(PictureDataDTO pdto : pictureDataList){
                 PictureDataBeans picture = new PictureDataBeans();
                 picture.DTO2PDBMapping(pdto);
-                
-                //フォルダ内に存在する写真とDB内の写真を確認
-                //一致するもののみ表示
+                String pictureName = "";
+            
                 for(File file:files){
                 //隠しファイルは除外
                     if(file.getName().equals(picture.getName())){
-                    pictures.put(picture.getPictureID(), picture);
+                    pictureName = file.getName();
+                    pictures.put(pictureName, picture);
                     }
                 }
             }
@@ -160,16 +161,15 @@ public class PictureGetLogic {
         
     }
     */
-    public PictureDataBeans getPictureFromList(int pictureID, Map<Integer, PictureDataBeans> pictures){
+    public PictureDataBeans getPictureFromList(String pictureName, Map<String, PictureDataBeans> picturess){
         PictureDataBeans pdb = new PictureDataBeans();
-        for(Integer pID : pictures.keySet()){
-            if(pID == pictureID){
-                pdb = pictures.get(pID);
+        for(String pName : picturess.keySet()){
+            if(pName.equals(pictureName)){
+                pdb = picturess.get(pName);
                 System.out.println("A:"+pdb.getPath());
             }
         }
         return pdb;
     }
 
-    
 }

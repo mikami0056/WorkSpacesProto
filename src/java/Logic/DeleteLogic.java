@@ -5,14 +5,14 @@
  */
 package Logic;
 
-import Model.PictureDataBeans;
-import Model.PictureDataDTO;
-import Model.PictureDataDAO;
-import Model.UserDataBeans;
-import Model.UserDataDAO;
-import Model.UserDataDTO;
 import java.io.File;
 import java.sql.SQLException;
+import model.PictureDataBeans;
+import model.PictureDataDAO;
+import model.PictureDataDTO;
+import model.UserDataBeans;
+import model.UserDataDAO;
+import model.UserDataDTO;
 
 /**
  *
@@ -39,13 +39,12 @@ public class DeleteLogic {
         PictureDataDTO dto = new PictureDataDTO();
         picture4Delete.PDB2DTOMapping(dto, loginAccount.getUserID());
         PictureDataDAO.getInstance().deletePictureData(dto);
-        String path = "/Users/gest/NetBeansProjects/WorkSpaces/web/common/image/";
-        File file4Delete = new File(path + loginAccount.getUserID() + "/" + picture4Delete.getName());
+        String path = "/Users/gest/NetBeansProjects/WorkSpacesProto/web/common/image/";
+        File file4Delete = new File(path + loginAccount.getUserName() + "/" + picture4Delete.getName());
         
         if(file4Delete.exists()){
             file4Delete.delete();
         }
         
     }
-    
 }

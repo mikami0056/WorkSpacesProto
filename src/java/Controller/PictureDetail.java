@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
+import Logic.CountLogic;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -14,18 +15,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import Model.*;
+import model.CountDataBeans;
+import model.PictureDataBeans;
+import model.UserDataBeans;
 import net.arnx.jsonic.JSON;
-import Logic.CountLogic;
-import java.util.Enumeration;
 
 /**
  *
  * @author gest
  */
 public class PictureDetail extends HttpServlet {
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -40,39 +39,35 @@ public class PictureDetail extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
-        UserDataBeans loginAccount = (UserDataBeans)session.getAttribute("loginAccount");
+        request.setCharacterEncoding("UTF-8");
         
-        //写真IDを取得
         String strID = request.getParameter("ID");
         Integer ID = Integer.parseInt(strID);
-        //総評価数, 新着写真, 新着コメントのうちのどれかを判断
         String option = request.getParameter("option");
-        //詳細画面表示用インスタンス
+        UserDataBeans loginAccount = (UserDataBeans)session.getAttribute("loginAccount");
         PictureDataBeans picture = new PictureDataBeans();
-        //評価記録及び表示用インスタンス, セッションスコープ内に存在しなければ新しく生成する.
+        
+        
         CountDataBeans countData = (CountDataBeans)session.getAttribute(strID);
         if(countData == null){
             countData = new CountDataBeans();
-            countData.setPictureID(ID);
-            //DBから写真評価データを取得
             CountLogic.getInstance().getDataFromDB(countData);
         }
         
         switch(option){
             
             case "Rank":
-            Map<Integer, PictureDataBeans> pictureByRank = (Map<Integer, PictureDataBeans>)session.getAttribute("pictureByRank");
+            Map<Integer, PictureDataBeans> pictureByRank = (Map<Integer, PictureDataBeans>)session.getAttribute("picturesByRank");
             picture = pictureByRank.get(ID);
             countData.setUserID(loginAccount.getUserID());
             countData.setPictureID(picture.getPictureID());
             System.out.println(picture.getUserName());
             break;
             
-            case "Date":
-            Map<Integer, PictureDataBeans> pictureByDate = (Map<Integer, PictureDataBeans>)session.getAttribute("pictureByDate");
-            picture = pictureByDate.get(ID);
+            case "Time":
+            Map<Integer, PictureDataBeans> pictureByTime = (Map<Integer, PictureDataBeans>)session.getAttribute("pictureByTime");
+            picture = pictureByTime.get(ID);
             countData.setUserID(loginAccount.getUserID());
             countData.setPictureID(picture.getPictureID());
             break;
@@ -85,12 +80,12 @@ public class PictureDetail extends HttpServlet {
             break;
             
         }
-        
         CountLogic.getInstance().getDataFromDB(countData);
         session.setAttribute("picture4Detail", picture);
         session.setAttribute(strID, countData);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/picturedetail.jsp");
         dispatcher.forward(request, response);
+        
     }
 
     /**
@@ -118,7 +113,6 @@ public class PictureDetail extends HttpServlet {
         String param = request.getParameter("param");
         int returnParam = CountLogic.getInstance().countAndGetDataFromDB(countData, param, picture4Detail);
         out.print(JSON.encode(returnParam));
-        
     }
 
     /**

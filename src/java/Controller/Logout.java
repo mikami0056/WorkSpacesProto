@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +19,8 @@ import javax.servlet.http.HttpSession;
  * @author gest
  */
 public class Logout extends HttpServlet {
+
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -31,9 +33,12 @@ public class Logout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         HttpSession session = request.getSession();
         session.invalidate();
-        response.sendRedirect("index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/logout.jsp");
+        dispatcher.forward(request,response);
+        
     }
 
     /**

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DB;
+package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +14,6 @@ import java.sql.SQLException;
  * @author gest
  */
 public class dbmanager {
-    
     public static Connection getConnection() throws ClassNotFoundException, SQLException{
         Connection conn = null;
         try{
@@ -39,5 +38,4 @@ public class dbmanager {
         }
         return conn;
     }
-    
 }

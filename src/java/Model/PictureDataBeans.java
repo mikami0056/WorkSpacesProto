@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,28 +14,31 @@ import java.util.Map;
  *
  * @author gest
  */
-public class PictureDataBeans implements Serializable {
-    //各フィールド
+public class PictureDataBeans implements Serializable{
+    
     private int pictureID;
     private String path;
     private String name;
     private String comment;
     private String userName;
     private int category;
+    private int beautiful;
+    private int cool;
+    private int stylish;
     private int sum;
     private Date dateTime;
     
-    public PictureDataBeans(){
-        this.sum = 0;
-    }
+    public PictureDataBeans(){}
     
     public PictureDataBeans(String name, String path, String comment, int category, String userName){
         this.name = name;
         this.path = path;
         this.comment = comment;
         this.category = category;
+        this.beautiful = 0;
+        this.cool = 0;
+        this.stylish = 0;
         this.userName = userName;
-        this.sum = 0;
     }
     
     public void setPictureID(int pictureID){
@@ -80,6 +83,27 @@ public class PictureDataBeans implements Serializable {
         return this.category;
     }
     
+    public void setBeautiful(int beautiful){
+        this.beautiful += beautiful;
+    }
+    public int getBeautiful(){
+        return this.beautiful;
+    }
+    
+    public void setCool(int cool){
+        this.cool += cool;
+    }
+    public int getCool(){
+        return this.cool;
+    }
+    
+    public void setStylish(int stylish){
+        this.stylish += stylish;
+    }
+    public int getStylish(){
+        return this.stylish;
+    }
+    
     public void setSum(int sum){
         this.sum = sum;
     }
@@ -94,17 +118,23 @@ public class PictureDataBeans implements Serializable {
         return this.dateTime;
     }
     
+    public void calculationSum(){
+        this.sum = this.beautiful + this.cool + this.stylish;
+    }
     
     public void PDB2DTOMapping(PictureDataDTO dto, int userID){
         dto.setPictureID(this.pictureID);
         dto.setPicturePath(this.path);
         dto.setPictureName(this.name);
         dto.setPicturePath(this.path);
+        dto.setBeautiful(this.beautiful);
+        dto.setCool(this.cool);
+        dto.setStylish(this.stylish);
+        dto.setSum(this.sum);
         dto.setOwnerComment(this.comment);
         dto.setCategoryID(this.category);
         dto.setUserID(userID);
         dto.setUserName(this.userName);
-        dto.setSum(this.sum);
     }
     
     public void DTO2PDBMapping(PictureDataDTO dto){
@@ -115,10 +145,8 @@ public class PictureDataBeans implements Serializable {
         this.category = dto.getCategoryID();
         this.dateTime = dto.getSubmitDate();
         this.userName = dto.getUserName();
-        this.sum = dto.getSum();
     }
     
-    /*
     //データベースからの評価取得用
     public void setValues(Map<String, Integer> values){
         for(String categoryKey : values.keySet()){
@@ -145,7 +173,7 @@ public class PictureDataBeans implements Serializable {
         values.put("stylish", this.stylish);
         return values;
     }
-    */
+    
     public void reInputName4Path(String name){
         System.out.println("reInputeName1" + this.path);
         this.path = this.path.replaceAll(this.name, name);
@@ -177,6 +205,5 @@ public class PictureDataBeans implements Serializable {
         }
         return result;
     }
-    
     
 }

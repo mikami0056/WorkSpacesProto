@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package model;
 
 /**
  *
  * @author gest
  */
 public class CountDataDTO {
+    
     int userID;
     int pictureID;
     int beautiful;
@@ -50,5 +51,4 @@ public class CountDataDTO {
     public int getStylish(){
         return this.stylish;
     }
-    
 }

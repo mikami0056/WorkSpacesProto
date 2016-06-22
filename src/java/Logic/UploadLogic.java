@@ -5,11 +5,7 @@
  */
 package Logic;
 
-import Controller.Upload;
-import Model.PictureDataBeans;
-import Model.PictureDataDAO;
-import Model.PictureDataDTO;
-import Model.UserDataBeans;
+import controller.Upload;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +14,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import model.PictureDataBeans;
+import model.PictureDataDAO;
+import model.PictureDataDTO;
+import model.UserDataBeans;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -38,13 +38,14 @@ public class UploadLogic {
     }
     
     //写真アップロード用
-    public void uploadPicture(HttpServletRequest request, UserDataBeans loginAccount, String contextPath){
-        
-        
+    public void pictureUpload(HttpServletRequest request, UserDataBeans loginAccount, String contextPath){
+        for(int i = 0; i < 6; i++){}
+        PictureDataBeans picture = null;
         
         //写真保存用ディレクトリ
+        System.out.println("パス" + request.getRequestURI());
         String path = "/Users/gest/NetBeansProjects/WorkSpaces/web/common/pictures/";
-        File newDirectry = new File(path + loginAccount.getUserID());        
+        File newDirectry = new File(path + loginAccount.getUserName());        
         
         //存在しなければ作成
         if(!newDirectry.exists()|| newDirectry == null){
@@ -116,15 +117,14 @@ public class UploadLogic {
             @ここで写真名を利用した写真IDを生成している
             */
             pictureData.write(new File(dPath + "/" + pictureName + extension));
-            String pPath = contextPath + "/common/pictures/" + loginAccount.getUserID() + "/" + pictureName + extension;
-            PictureDataBeans picture = new PictureDataBeans((pictureName + extension), pPath, comment, categoryID, loginAccount.getUserName());
+            String pPath = contextPath + "/common/image/" + loginAccount.getUserName() + "/" + pictureName + extension;
+            picture = new PictureDataBeans((pictureName + extension), pPath, comment, categoryID, loginAccount.getUserName());
             picture.setPictureID(picture.hashCode());
             
             //DBに写真情報を保存
             PictureDataDTO dto = new PictureDataDTO();
             picture.PDB2DTOMapping(dto, loginAccount.getUserID());
             PictureDataDAO.getInstance().setPictureData(dto);
-            
             
             
         } catch (FileUploadException ex) {

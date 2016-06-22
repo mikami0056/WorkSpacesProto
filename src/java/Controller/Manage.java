@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 import Logic.DeleteLogic;
 import Logic.PictureGetLogic;
 import Logic.UpdateLogic;
-import Model.PictureDataBeans;
-import Model.UserDataBeans;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
@@ -20,13 +17,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.PictureDataBeans;
+import model.UserDataBeans;
 
 /**
  *
  * @author gest
  */
 public class Manage extends HttpServlet {
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -39,6 +37,7 @@ public class Manage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            
         request.setCharacterEncoding("UTF-8");
         String destination = "";
         HttpSession session = request.getSession();
@@ -49,48 +48,47 @@ public class Manage extends HttpServlet {
             String contextPath = this.getServletContext().getContextPath();
             
             String option = (String)request.getAttribute("option");
-            if(option == null){
-                option = request.getParameter("option");
-            }
-            System.out.println(option);
-            int pictureID = 0;
+            String name = "";
             switch(option){
                 
-                case "manageMyPicture":
+                case "mypicturemanage":
                     //本番用
-                    Map<Integer, PictureDataBeans> pictures = PictureGetLogic.getInstance().getPicture(loginAccount, contextPath);
+                    Map<String, PictureDataBeans> pictures = PictureGetLogic.getInstance().PictureGet(loginAccount, contextPath);
                     session.setAttribute("pictures", pictures);
-                    destination = "/WEB-INF/jsp/managemypicture.jsp";
+                    destination = "/WEB-INF/jsp/mypicturemanager.jsp";
                     System.out.println("写真管理画面に進みます.");
                     
                 break;
                 
                 case "Update":
-                    pictureID = Integer.parseInt(request.getParameter("id"));
-                    Map<Integer, PictureDataBeans> pictures4Update = (HashMap<Integer, PictureDataBeans>)session.getAttribute("pictures");
-                    PictureDataBeans pdb4Update = PictureGetLogic.getInstance().getPictureFromList(pictureID, pictures4Update);
+                    name = request.getParameter("id");
+                    Map<String, PictureDataBeans> pictures4Update = (HashMap<String, PictureDataBeans>)session.getAttribute("pictures");
+                    PictureDataBeans pdb4Update = PictureGetLogic.getInstance().getPictureFromList(name, pictures4Update);
                     session.setAttribute("picture4Update", pdb4Update);
-                    destination = "/WEB-INF/jsp/updatemypicture.jsp";
+                    destination = "/WEB-INF/jsp/mypictureupdate.jsp";
                     System.out.println("写真更新画面に進みます.");
                 break;
                 
                 case "Delete":
-                    pictureID = Integer.parseInt(request.getParameter("id"));
-                    Map<Integer, PictureDataBeans> pictures4Delete = (Map<Integer, PictureDataBeans>)session.getAttribute("pictures");
-                    PictureDataBeans pdb4Delete = PictureGetLogic.getInstance().getPictureFromList(pictureID, pictures4Delete);
+                    name = request.getParameter("id");
+                    Map<String, PictureDataBeans> pictures4Delete = (Map<String, PictureDataBeans>)session.getAttribute("pictures");
+                    PictureDataBeans pdb4Delete = PictureGetLogic.getInstance().getPictureFromList(name, pictures4Delete);
                     session.setAttribute("picture4Delete", pdb4Delete);
-                    destination = "/WEB-INF/jsp/deletemypicture.jsp";
+                    destination = "/WEB-INF/jsp/mypicturedelete.jsp";
                     System.out.println("写真削除画面に進みます.");
                 break;
             }
             
+            //RequestDispatcher dispatcher = request.getRequestDispatcher(destination);
+            //dispatcher.forward(request, response);
             
         } catch(Exception e){
             System.out.println("エラーが発生しました / "+e.getMessage());
         }
             RequestDispatcher dispatcher = request.getRequestDispatcher(destination);
             dispatcher.forward(request, response);
-    }
+   
+        }
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -103,6 +101,7 @@ public class Manage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         request.setCharacterEncoding("UTF-8");
         String destination = "";
         
@@ -114,14 +113,15 @@ public class Manage extends HttpServlet {
             if(option == null){
                 option = request.getParameter("option");
             }
+            //System.out.println("["+option+"]");
             
             switch(option){
                 
-                case "manageMyPicture":
+                case "mypicturemanage":
                     String contextPath = this.getServletContext().getContextPath();
-                    Map<Integer, PictureDataBeans> pictures = PictureGetLogic.getInstance().getPicture(loginAccount, contextPath);
+                    Map<String, PictureDataBeans> pictures = PictureGetLogic.getInstance().PictureGet(loginAccount, contextPath);
                     session.setAttribute("pictures", pictures);
-                    destination = "/WEB-INF/jsp/managemypicture.jsp";
+                    destination = "/WEB-INF/jsp/mypicturemanager.jsp";
                     System.out.println("写真管理画面に進みます.");
                 break;
                     
@@ -143,6 +143,7 @@ public class Manage extends HttpServlet {
                 case "Delete":
                     PictureDataBeans pdb4Delete = (PictureDataBeans)session.getAttribute("picture4Delete");
                     DeleteLogic.getInstance().deletePictureData(pdb4Delete, loginAccount);
+                    
                     destination = "/WEB-INF/jsp/mypage.jsp";
                 break;
             }

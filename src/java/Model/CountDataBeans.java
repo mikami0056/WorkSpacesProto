@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package model;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author gest
  */
-public class CountDataBeans implements Serializable{
+public class CountDataBeans implements Serializable {
     //各フィールド
     int beautiful;
     int cool;

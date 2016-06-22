@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package model;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author gest
  */
 public class UserDataBeans implements Serializable{
-    //各変数
+    
     private int userID;
     private String userName;
     private String passWord;
@@ -115,8 +115,6 @@ public class UserDataBeans implements Serializable{
         this.userName = dto.getUserName();
         this.passWord = dto.getPassWord();
         this.mail = dto.getMail();
-        this.questionID = dto.getQuestionID();
-        this.answer = dto.getAnswer(); 
     }
     
     /*

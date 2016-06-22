@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package model;
 
 import java.util.Date;
 
@@ -12,15 +12,19 @@ import java.util.Date;
  * @author gest
  */
 public class PictureDataDTO {
+    
     private int pictureID;
     private String picturePath;
     private String pictureName;
     private String ownerComment;
+    private int beautiful;
+    private int cool;
+    private int stylish;
+    private int sum;
     private String userName;
     private int categoryID;
     private int userID;
     private Date submitDate;
-    private int sum;
     
     
     public PictureDataDTO(){}
@@ -53,6 +57,34 @@ public class PictureDataDTO {
         return this.ownerComment;
     }
     
+    public void setBeautiful(int beautiful){
+        this.beautiful = beautiful;
+    }
+    public int getBeautiful(){
+        return this.beautiful;
+    }
+    
+    public void setCool(int cool){
+        this.cool = cool;
+    }
+    public int getCool(){
+        return this.cool;
+    }
+    
+    public void setStylish(int stylish){
+        this.stylish = stylish;
+    }
+    public int getStylish(){
+        return this.stylish;
+    }
+    
+    public void setSum(int sum){
+        this.sum = sum;
+    }
+    public int getSum(){
+        return this.sum;
+    }
+    
     public void setCategoryID(int category){
         this.categoryID = category;
     }
@@ -79,12 +111,5 @@ public class PictureDataDTO {
     }
     public String getUserName(){
         return this.userName;
-    }
-    
-    public void setSum(int sum){
-        this.sum = sum;
-    }
-    public int getSum(){
-        return this.sum;
     }
 }

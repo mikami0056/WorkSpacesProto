@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Contact extends HttpServlet {
 
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -32,6 +31,10 @@ public class Contact extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/contactform.jsp");
+        dispatcher.forward(request, response);
+        
     }
 
     /**
@@ -45,8 +48,23 @@ public class Contact extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/contactform.jsp");
-        dispatcher.forward(request,response);
+        
+        request.setCharacterEncoding("UTF-8");
+        
+        if(request.getParameter("check") != null && request.getParameter("check").equals("1")){
+            
+            String contactType = request.getParameter("contactType");
+            String subject = request.getParameter("subject");
+            String mail = request.getParameter("mail");
+            String comment = request.getParameter("message");
+            
+        }else{
+            
+            request.setAttribute("caution", "チェックして下さい!");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/contactform.jsp");
+            dispatcher.forward(request, response);
+            
+        }
     }
 
     /**
